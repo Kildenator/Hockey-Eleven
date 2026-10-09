@@ -490,7 +490,7 @@ body{letter-spacing:.01em}
 
 
 /* V17: dedicated match centre inspired by mobile football manager flows */
-/* V18 live rink animation update */
+/* V19 smooth live rink animation update */
 .match-centre{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.75fr);gap:12px;max-width:1450px;margin:auto}.match-centre-main,.match-centre-side{min-width:0}.match-teamsheet{display:grid;grid-template-columns:1fr 1fr;gap:10px}.sheet-team{border:1px solid #1b4663;border-radius:12px;overflow:hidden;background:#071725}.sheet-head{display:flex;align-items:center;justify-content:space-between;padding:10px;background:linear-gradient(90deg,#0a3151,#0a1a29);font-weight:900;font-size:11px}.sheet-player{display:flex;align-items:center;gap:8px;padding:7px 9px;border-top:1px solid #112d43;font-size:10px}.sheet-number{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#138cff,#064aaf);font-weight:900}.sheet-number.away{background:linear-gradient(145deg,#ff7168,#a9203c)}.sheet-player small{display:block;color:#7f9bb0;font-size:8px;margin-top:2px}.match-motivation{padding:12px;border:1px solid #2679a9;border-radius:12px;background:linear-gradient(120deg,#0c3551,#071624);margin:10px 0}.motivation-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.motivation-actions button{flex:1;min-width:110px}.match-notice-backdrop{position:fixed;inset:0;z-index:150;background:#020813cc;display:grid;place-items:center;padding:18px;backdrop-filter:blur(5px)}.match-notice{width:min(440px,100%);border:1px solid #3a9fe0;border-radius:18px;overflow:hidden;background:linear-gradient(150deg,#0c2940,#06101c 75%);box-shadow:0 25px 90px #000c;animation:actionPop .28s ease-out}.match-notice-top{padding:14px 16px;background:linear-gradient(90deg,#087cff,#07518d);font-size:10px;font-weight:900;letter-spacing:.14em}.match-notice-body{padding:18px}.match-notice-vs{display:grid;grid-template-columns:1fr 44px 1fr;align-items:center;text-align:center;gap:6px;margin:12px 0 16px}.match-notice-logo{width:55px;height:55px;border-radius:14px;margin:0 auto 7px;display:grid;place-items:center;background:linear-gradient(145deg,#e9f8ff,#087cff);font-size:24px}.match-notice-logo.away{background:linear-gradient(145deg,#fff0a5,#ff5b42)}.match-notice-name{font-size:12px;font-weight:950}.match-notice-sub{font-size:9px;color:#91adc1;margin-top:4px}.match-notice-actions{display:flex;gap:8px}.match-notice-actions button{flex:1;padding:11px 8px;border-radius:9px;font-size:10px;font-weight:900}.match-notice-primary{border:1px solid #54baff;background:linear-gradient(90deg,#087cff,#0da7ff);color:white}.match-notice-later{border:1px solid #244760;background:#0b1c2b;color:#a9c1d1}.match-rink-panel{margin-top:0}.rink-wait{transition:opacity .2s}
 @media(max-width:760px){.match-centre{grid-template-columns:1fr}.match-teamsheet{grid-template-columns:1fr}.sheet-team.away-sheet{display:none}.match-centre-side{display:grid;grid-template-columns:1fr;gap:8px}.match-rink-panel{margin-top:0}}
 
@@ -510,6 +510,29 @@ body{letter-spacing:.01em}
 .rink-caption{font-size:10px}
 @keyframes rinkToast{from{opacity:0;transform:translate(-50%,8px) scale(.96)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
 @media(max-width:600px){.hockey-rink{aspect-ratio:1.65/1;min-height:190px}.rink-player{width:23px;height:23px;font-size:9px}.rink-livebar{font-size:9px}}
+
+
+/* V19 — smooth live rink motion: continuous skating, puck glide and action-specific movement */
+.hockey-rink .rink-player{animation:skateGlide 2.2s ease-in-out infinite alternate;will-change:left,top,transform}
+.hockey-rink .rink-player:nth-of-type(odd){animation-duration:1.85s;animation-delay:-.55s}
+.hockey-rink .rink-player:nth-of-type(3n){animation-duration:2.65s;animation-delay:-1.1s}
+.hockey-rink .rink-player.home{--drift:5px}
+.hockey-rink .rink-player.away{--drift:-5px}
+.hockey-rink .rink-player.gk{animation:goalieShift 1.7s ease-in-out infinite alternate}
+.hockey-rink .rink-player.has-puck{animation:carrierShift .85s ease-in-out infinite alternate}
+.hockey-rink .rink-player.shooting{animation:shootFollow .48s ease-in-out infinite alternate}
+.hockey-rink .rink-puck{animation:puckGlide 1.35s ease-in-out infinite alternate;will-change:left,top,transform}
+.hockey-rink .rink-puck.fly{animation:puckFlight .72s cubic-bezier(.22,.75,.25,1) infinite alternate}
+.hockey-rink .rink-puck.goal-shot{animation:goalFlight .38s ease-in infinite alternate}
+.hockey-rink:has(.rink-event-toast) .rink-player{animation-duration:1.05s}
+@keyframes skateGlide{from{transform:translate(-50%,-50%) translate(0,0)}to{transform:translate(-50%,-50%) translate(var(--drift,4px),-4px)}}
+@keyframes goalieShift{from{transform:translate(-50%,-50%) translateX(-2px)}to{transform:translate(-50%,-50%) translateX(3px)}}
+@keyframes carrierShift{from{transform:translate(-50%,-50%) translate(-2px,1px) scale(1)}to{transform:translate(-50%,-50%) translate(3px,-3px) scale(1.06)}}
+@keyframes shootFollow{from{transform:translate(-50%,-50%) translateX(-2px) scale(1.12)}to{transform:translate(-50%,-50%) translate(5px,-2px) scale(1.2)}}
+@keyframes puckGlide{from{transform:translate(-2px,1px) scale(.96)}to{transform:translate(3px,-3px) scale(1.08)}}
+@keyframes puckFlight{from{transform:translate(-5px,3px) scale(.9)}to{transform:translate(6px,-4px) scale(1.1)}}
+@keyframes goalFlight{from{transform:translate(-2px,1px) scale(1)}to{transform:translate(5px,-2px) scale(1.35)}}
+@media(prefers-reduced-motion:reduce){.hockey-rink .rink-player,.hockey-rink .rink-puck{animation-duration:3s!important;transition-duration:1.2s!important}}
 
 </style>
 </head>
