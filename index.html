@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#030812">
-<title>HOCKEY ELEVEN — V25 Arena Designer</title>
+<title>HOCKEY ELEVEN — V27 3D Broadcast Edition</title>
 <style>
 :root{--bg:#030812;--panel:#081827;--panel2:#0b2033;--line:#173c58;--blue:#0787ff;--cyan:#53cfff;--text:#f4f8fc;--muted:#7891a7;--green:#42e88e;--red:#ff6269;--gold:#ffc936;--shadow:0 16px 45px #0009}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
@@ -657,6 +657,76 @@ button:disabled{opacity:.46;cursor:not-allowed;filter:saturate(.55)}
 .arena-layout{perspective:1300px}
 .arena-editor{position:relative;z-index:5}
 @media(max-width:760px){.arena-bowl{min-height:400px;padding:35px 8px 25px;perspective:850px}.arena-roof{border-width:3px;border-bottom-width:8px}.arena-seats{inset:18% 3% 14%;transform:rotateX(13deg) scaleY(1.02)}.arena-rink{width:96%;transform:rotateX(13deg) scaleY(.94);border-width:5px}.arena-bowl:after{top:8%;height:20%}}
+
+
+/* V27: full-game broadcast-inspired visual overhaul. Keeps the existing game logic and save format. */
+:root{--bg:#03070d;--panel:#0a1723;--panel2:#102638;--line:#25465c;--blue:#128bff;--cyan:#77e2ff;--text:#f4f8fc;--muted:#91a6b8;--green:#4ce6a0;--red:#ff6476;--gold:#ffd36a;--shadow:0 20px 55px #000b}
+body{background:#03070d}
+.app{background:radial-gradient(ellipse at 55% -15%,#245a7b 0,#0a1b2a 34%,#03070d 78%)}
+.app:before{content:"";position:absolute;inset:68px 0 0 188px;pointer-events:none;opacity:.2;background:repeating-linear-gradient(115deg,transparent 0 140px,#91dcff0a 141px 143px),radial-gradient(ellipse at 50% 0,#2d9bdc35,transparent 65%)}
+.top{background:linear-gradient(180deg,#0b1a28f5,#040b12f5);border-bottom:1px solid #3a647e;box-shadow:0 10px 32px #0008}
+.brand-mark{filter:drop-shadow(0 0 14px #199dff8a)}
+.brand-mark:before{background:linear-gradient(145deg,#fff,#69d8ff 38%,#0877db 75%,#063b72)}
+.brand-title{letter-spacing:.11em;text-shadow:0 2px 18px #138bff44}
+.top-pill,.gear{background:linear-gradient(145deg,#122b3e,#07121d);border-color:#31536a;box-shadow:inset 0 1px #ffffff0c,0 6px 18px #0005}
+.side{background:linear-gradient(180deg,#091725,#03080e);border-right-color:#29465b}
+.navbtn{border-radius:8px;letter-spacing:.045em;text-transform:uppercase}
+.navbtn.active{background:linear-gradient(110deg,#0878d9,#0b3e70);border-color:#5bc8ff70;box-shadow:inset 0 1px #ffffff26,0 7px 25px #087cff38}
+.main{background-image:radial-gradient(ellipse at 50% 0,#1d5a7b13,transparent 55%)}
+.panel{position:relative;background:linear-gradient(155deg,#102536f5 0,#091724f8 60%,#07111cf8);border-color:#2a4d63;border-radius:10px;box-shadow:0 16px 36px #0007,inset 0 1px #ffffff0a}
+.panel-head{background:linear-gradient(90deg,#132e42,#0b1b29);border-bottom-color:#2a4a5e;min-height:46px}
+.panel-head h2{letter-spacing:.09em;text-transform:uppercase}
+.page-title h1{text-transform:uppercase;letter-spacing:.06em;text-shadow:0 2px 22px #168bff26}
+.page-title p{font-size:11px}
+.hero{border-radius:10px;border-color:#386985;background:linear-gradient(180deg,#17415c 0,#0b2233 37%,#040b13 100%);box-shadow:0 22px 55px #0009,inset 0 1px #ffffff20}
+.hero:before{background:radial-gradient(ellipse at 8% 0,#e4f8ff42,transparent 32%),radial-gradient(ellipse at 92% 0,#d6f2ff30,transparent 30%),linear-gradient(180deg,#071b2a12 0 30%,#020811f0 100%)}
+.hero:after{left:1%;right:1%;bottom:-32%;height:74%;border-radius:48% 48% 0 0;background:repeating-linear-gradient(90deg,#ffffff08 0 1px,transparent 1px 48px),radial-gradient(ellipse at 50% 5%,#f5fdff 0,#c9e5ee 39%,#7a9eaf 66%,#213d50 70%,#091522 74%);box-shadow:0 -18px 70px #5acbff2e,0 -2px #e6f9ff}
+.scoreboard{border-radius:4px;border:1px solid #6ebfe9a0;background:linear-gradient(180deg,#0b2438f5,#020911f5);box-shadow:0 5px 20px #0009,inset 0 1px #ffffff25;letter-spacing:.15em;font-size:9px}
+.logo{border-radius:10px;background:linear-gradient(145deg,#f8fdff,#8fd6f5 35%,#0964b0 76%,#073158);box-shadow:0 9px 0 #03111d,0 14px 28px #000b,inset 0 1px 5px #fff;border-color:#c4f0ff}
+.logo.away{background:linear-gradient(145deg,#fff7d2,#ffb84b 36%,#c84c28 76%,#612016);border-color:#ffe0a0}
+.start,.action-btn{border-radius:5px;background:linear-gradient(180deg,#229fff,#075bc2);border-color:#7ed7ff70;box-shadow:inset 0 1px #ffffff5c,0 6px 16px #006fe33d;letter-spacing:.06em;text-transform:uppercase}
+.start{padding:11px 26px;font-size:11px}
+.action-btn:active,.start:active,.tab:active{transform:translateY(1px);filter:brightness(1.15)}
+.tab,.select{border-radius:5px;background:linear-gradient(180deg,#132c40,#091724);border-color:#31536b;font-size:9px}
+.tab.active{background:linear-gradient(180deg,#158ce9,#0759ac);box-shadow:inset 0 1px #ffffff45}
+.action{border-radius:9px;min-height:98px;background:linear-gradient(145deg,#10283a,#07121d);border-color:#284c63;box-shadow:0 10px 25px #0005,inset 0 1px #ffffff0a;transition:transform .18s,border-color .18s,filter .18s}
+.action:hover{transform:translateY(-2px);border-color:#58bce9;filter:brightness(1.1)}
+.action-icon{filter:drop-shadow(0 4px 8px #168bff55)}
+.player{background:linear-gradient(90deg,#ffffff03,transparent);transition:background .15s}
+.player:active{background:#1c8bca16}
+.avatar,.staff-avatar{background:linear-gradient(145deg,#2a5c79,#0b1c2b 70%);border-color:#4d829e;box-shadow:inset 0 1px #ffffff1c,0 4px 9px #0005}
+.progress{background:#142c3d;box-shadow:inset 0 1px 3px #0008}
+.progress i{background:linear-gradient(90deg,#087cff,#61e0ff);box-shadow:0 0 10px #21a9ff65}
+.metric{font-size:10px}
+.notice{border-left-color:#4bc8ff;background:linear-gradient(90deg,#0787ff15,transparent);font-size:10px}
+/* Match view: deeper arena bowl, glossy ice, raised boards and equipment-like player silhouettes. */
+.match-rink-panel{background:linear-gradient(180deg,#102536,#050d15);border:1px solid #315b73;border-radius:10px;box-shadow:0 20px 45px #000a,inset 0 1px #ffffff13;overflow:hidden}
+.rink-livebar{background:linear-gradient(90deg,#06101a,#10283a,#06101a);border-bottom:1px solid #3d6379;text-shadow:0 2px 8px #000}
+.match-rink-head{background:linear-gradient(90deg,#16364a,#0a1b29);border-bottom:1px solid #294c62}
+.hockey-rink{position:relative;isolation:isolate;overflow:hidden;border:8px solid #dcecf3!important;border-radius:42px!important;background:linear-gradient(180deg,#f9fdff 0%,#e7f5fa 15%,#cce5ef 48%,#eaf7fb 85%,#b7d5e1 100%)!important;box-shadow:0 0 0 3px #314f61,0 9px 0 #102b3e,0 17px 0 #06111a,0 24px 45px #000b,inset 0 0 32px #477e9a55!important;transform:perspective(1050px) rotateX(5deg);transform-origin:center 60%;}
+.hockey-rink:before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:repeating-linear-gradient(0deg,#ffffff00 0 9px,#729db00b 10px 11px),linear-gradient(90deg,#d8eef7aa,transparent 13%,transparent 87%,#8bb7c9aa),radial-gradient(ellipse at 50% 35%,#fff9,transparent 72%);box-shadow:inset 0 0 0 2px #ffffff,inset 0 0 40px #7daec366}
+.rink-lines{z-index:1;opacity:.85;background:linear-gradient(90deg,transparent 0 32.7%,#cf2436 32.7% 33.5%,transparent 33.5% 66.5%,#cf2436 66.5% 67.3%,transparent 67.3%),linear-gradient(90deg,transparent 0 49.4%,#176fc4 49.4% 50.6%,transparent 50.6%),linear-gradient(0deg,transparent 0 49.3%,#c92235 49.3% 50.7%,transparent 50.7%);mix-blend-mode:multiply}
+.rink-circle,.rink-center-circle{border-color:#2477bd!important;box-shadow:inset 0 0 0 1px #ffffff75}
+.rink-goal{border:3px solid #ef5b65!important;background:repeating-linear-gradient(45deg,#fff8 0 2px,#d8e8ee 2px 4px)!important;box-shadow:0 2px 5px #17394c77,inset 0 0 5px #fff}
+.rink-player{z-index:4;width:clamp(20px,3.2vw,31px)!important;height:clamp(25px,4vw,37px)!important;border-radius:9px 9px 7px 7px!important;border:2px solid #eafaff!important;background:linear-gradient(145deg,#79d8ff 0,#0873bd 38%,#06375f 75%,#02182c)!important;color:#fff!important;font-size:10px!important;font-weight:1000!important;text-shadow:0 2px 3px #000!important;box-shadow:0 5px 0 #06111c,0 7px 8px #00111f77,inset 0 1px 2px #fff9!important;transform:translate(-50%,-50%) rotateX(-5deg)}
+.rink-player:before{content:"";position:absolute;left:19%;right:19%;top:17%;height:28%;border-radius:4px;background:linear-gradient(180deg,#f5fdff,#8fb7c9);box-shadow:0 1px 2px #0007}
+.rink-player.away{background:linear-gradient(145deg,#ff9e9e 0,#cf263d 40%,#74142c 76%,#300a16)!important;border-color:#fff0f1!important}
+.rink-player.gk{width:clamp(24px,4vw,38px)!important;height:clamp(30px,4.5vw,43px)!important;border-radius:7px!important;background:linear-gradient(145deg,#fff2a7,#d59b22 45%,#674312)!important;border-color:#fff5cf!important}
+.rink-player.has-puck{filter:drop-shadow(0 0 9px #ffdc63);animation:playerPossession .8s ease-in-out infinite alternate}
+.rink-puck{z-index:6;width:10px!important;height:6px!important;background:radial-gradient(ellipse at 35% 25%,#6b7075,#080a0c 60%)!important;box-shadow:0 4px 3px #0009!important}
+.rink-overlay-label{z-index:7;text-shadow:0 2px 5px #fff,0 0 10px #fff;color:#17425b!important;font-weight:1000;letter-spacing:.09em}
+.rink-event-toast{z-index:8;backdrop-filter:blur(8px);box-shadow:0 8px 25px #0006}
+.rink-key{padding:10px 13px;background:#081725}
+.rink-caption{background:#091724;color:#93adbf;padding:10px 13px;font-size:10px;line-height:1.5}
+@keyframes playerPossession{from{filter:drop-shadow(0 0 2px #ffdc63)}to{filter:drop-shadow(0 0 10px #ffdc63)}}
+/* Stadium and arena screens retain their controls but gain a broadcast-scale presentation. */
+.stadium-map{background:radial-gradient(ellipse at 50% 45%,#315b6f 0,#112c3d 42%,#040b12 78%)!important;border-color:#3b6d86!important;box-shadow:inset 0 0 55px #0009,0 16px 36px #0008}
+.arena{box-shadow:0 0 0 5px #112a3a,0 0 0 8px #4a91b0,0 20px 35px #000b,0 0 45px #179bff42!important}
+.arena-bowl{box-shadow:0 20px 45px #000a,inset 0 0 0 2px #ffffff15}
+.arena-roof{filter:drop-shadow(0 10px 15px #0009)}
+.arena-seats{filter:drop-shadow(0 8px 6px #0007)}
+.arena-rink{box-shadow:0 12px 0 #163044,0 20px 28px #0009,inset 0 0 20px #437c9a66!important}
+@media(max-width:760px){.app{background:radial-gradient(ellipse at 50% -5%,#19425e 0,#061523 42%,#02060b 80%)}.main{padding:11px 10px 28px}.hero{border-radius:8px}.hockey-rink{border-width:5px!important;border-radius:23px!important;transform:perspective(900px) rotateX(3deg)}.rink-player{box-shadow:0 3px 0 #06111c,0 5px 6px #00111f77,inset 0 1px 2px #fff9!important}.panel{border-radius:8px}.page-title h1{font-size:19px}}
 
 </style>
 </head>
