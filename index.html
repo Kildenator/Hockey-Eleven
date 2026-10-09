@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#030812">
-<title>HOCKEY ELEVEN — V16 Action Scenes</title>
+<title>HOCKEY ELEVEN — V23 Release Candidate</title>
 <style>
 :root{--bg:#030812;--panel:#081827;--panel2:#0b2033;--line:#173c58;--blue:#0787ff;--cyan:#53cfff;--text:#f4f8fc;--muted:#7891a7;--green:#42e88e;--red:#ff6269;--gold:#ffc936;--shadow:0 16px 45px #0009}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
@@ -559,6 +559,71 @@ body.match-live-fullscreen .live-exit{position:fixed;right:12px;top:66px;z-index
 @media(orientation:portrait){body.match-live-fullscreen .hockey-rink{min-height:0!important}body.match-live-fullscreen .rink-player{width:clamp(22px,3vh,34px)!important;height:clamp(22px,3vh,34px)!important}body.match-live-fullscreen .rink-livebar{min-height:50px!important}}
 @media(prefers-reduced-motion:reduce){body.match-live-fullscreen .rink-player{transition:left .25s linear,top .25s linear!important}}
 
+
+/* V22 — goal-sequence polish: puck trail, shooter follow-through, goalie reaction, celebration */
+.rink-puck{transition:filter .12s;}
+.rink-puck.fly:after{content:"";position:absolute;right:65%;top:40%;width:24px;height:3px;border-radius:3px;background:linear-gradient(90deg,transparent,#111,#dff8ff);transform:rotate(-8deg);filter:blur(.4px);opacity:.9}
+.rink-player.shooting{animation:heShotFollow .42s ease-out 1;box-shadow:0 0 0 3px #ffffffa8,0 0 18px #fef08a!important}
+.rink-player.gk.keeper-react{animation:heKeeper .6s ease-out 1;}
+.hockey-rink.goal-celebration{box-shadow:inset 0 0 0 3px #ffd166,0 0 34px #ffca5a66;}
+.hockey-rink.goal-celebration:after{content:"GOÓÓL!";position:absolute;z-index:12;left:50%;top:16%;transform:translate(-50%,-50%);font-size:clamp(22px,5vw,46px);font-weight:1000;font-style:italic;color:#ffe08a;text-shadow:0 3px 0 #7b2f10,0 0 24px #ffb52e;animation:heGoalPop 1.1s cubic-bezier(.2,.9,.2,1) both;pointer-events:none}
+.rink-player.goal-celebrate{animation:heCelebrate .85s ease-in-out 2;box-shadow:0 0 0 3px #ffe08a,0 0 20px #ffca5a!important;}
+@keyframes heShotFollow{0%{filter:brightness(1);transform:translate(-50%,-50%) scale(1)}40%{filter:brightness(1.8);transform:translate(-50%,-50%) scale(1.18)}100%{filter:brightness(1.1);transform:translate(-50%,-50%) scale(1)}}
+@keyframes heKeeper{0%{filter:brightness(1);transform:translate(-50%,-50%)}45%{filter:brightness(1.8);transform:translate(-50%,-50%) scale(1.3, .8)}100%{filter:brightness(1);transform:translate(-50%,-50%)}}
+@keyframes heCelebrate{0%,100%{filter:brightness(1);transform:translate(-50%,-50%) scale(1)}45%{filter:brightness(1.8);transform:translate(-50%,-58%) scale(1.22)}}
+@keyframes heGoalPop{0%{opacity:0;top:22%;transform:translate(-50%,-50%) scale(.5)}22%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}70%{opacity:1;top:16%}100%{opacity:0;top:12%;transform:translate(-50%,-50%) scale(1)}}
+@media(prefers-reduced-motion:reduce){.rink-player,.rink-puck,.hockey-rink.goal-celebration:after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+
+
+
+/* HOCKEY ELEVEN V23 — release-candidate polish */
+:root{color-scheme:dark;--release-glow:#43caff;--release-border:#235674}
+button,.navbtn,.action{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button{transition:transform .14s ease,filter .14s ease,border-color .14s ease,box-shadow .14s ease}
+button:not(:disabled):active{transform:translateY(1px) scale(.985);filter:brightness(1.12)}
+button:focus-visible,[role=button]:focus-visible{outline:3px solid #74dcff;outline-offset:3px}
+button:disabled{opacity:.46;cursor:not-allowed;filter:saturate(.55)}
+.panel,.hero,.match-rink-panel,.sheet-team{box-shadow:0 12px 30px #0002,inset 0 1px #ffffff08}
+.panel-head{gap:10px}
+.page-title p{max-width:70ch;line-height:1.55}
+.metric b,.money,.scorebig,.scoreboard{font-variant-numeric:tabular-nums}
+.match-rink-panel{border-color:#24658a;background:radial-gradient(ellipse at 50% 0%,#123d55 0%,#071b2b 52%,#040d17 100%)}
+.hockey-rink{box-shadow:inset 0 0 0 1px #fff8,0 12px 32px #0005;background-image:linear-gradient(90deg,#dff7ff,#c7eff9 48%,#e4f9ff);}
+.rink-player{will-change:left,top;backface-visibility:hidden;contain:layout style}
+.rink-player.has-puck{animation:puckCarrierPulse .8s ease-in-out infinite alternate}
+.rink-player.goal-celebrate{animation:playerGoalCelebrate .48s ease-in-out 3!important}
+.rink-player.keeper-react{animation:keeperReact .42s ease-in-out 2!important}
+.rink-puck{will-change:left,top;backface-visibility:hidden}
+.hockey-rink.goal-celebration:after{content:'GÓÓÓL!';position:absolute;z-index:20;left:50%;top:50%;transform:translate(-50%,-50%);font-size:clamp(24px,6vw,68px);font-weight:1000;font-style:italic;letter-spacing:.06em;color:#fff;text-shadow:0 3px 0 #07518d,0 0 26px #ffd65c,0 8px 35px #000b;pointer-events:none;animation:goalBurst 1.1s cubic-bezier(.16,1,.3,1) both}
+.hockey-rink:has(.rink-player.shooting) .rink-puck{filter:drop-shadow(0 0 6px #ffad45)}
+.match-events{scroll-behavior:smooth}
+.event{animation:eventIn .22s ease-out}
+.event.goal-event{border-color:#dcae36;background:linear-gradient(100deg,#4b3514,#122131);box-shadow:inset 3px 0 #ffcf57}
+.toast{z-index:9999;max-width:calc(100vw - 28px);text-align:center;line-height:1.4}
+@keyframes puckCarrierPulse{from{box-shadow:0 0 0 3px #ffdc5a,0 0 10px #ffb900}to{box-shadow:0 0 0 6px #ffdc5a55,0 0 22px #ffb900}}
+@keyframes playerGoalCelebrate{0%,100%{translate:0 0;scale:1}35%{translate:0 -7px;scale:1.15}65%{translate:0 1px;scale:1.08}}
+@keyframes keeperReact{0%,100%{translate:0 0}50%{translate:0 -4px;scale:1.12}}
+@keyframes goalBurst{0%{opacity:0;scale:.45;rotate:-8deg}18%{opacity:1;scale:1.08;rotate:2deg}72%{opacity:1;scale:1;rotate:0}100%{opacity:0;scale:1.12}}
+@keyframes eventIn{from{opacity:0;translate:0 5px}to{opacity:1;translate:0 0}}
+@media(max-width:760px){
+ .main{padding-left:10px!important;padding-right:10px!important}
+ .match-centre{grid-template-columns:minmax(0,1fr)!important}
+ .match-centre-side{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+ .match-teamsheet{gap:6px}
+ .sheet-player{padding:7px 6px;gap:5px;font-size:9px}
+ .sheet-number{width:23px;height:23px;flex:0 0 23px}
+ .match-rink-panel{padding:7px}
+ .rink-key{gap:8px;font-size:10px}
+ .action-btn,.start{min-height:42px}
+}
+@media(orientation:landscape) and (max-height:520px){
+ body.match-live-fullscreen .rink-livebar{min-height:42px!important;padding:5px 12px!important}
+ body.match-live-fullscreen .match-rink-head{padding:4px 12px!important;margin:0!important}
+ body.match-live-fullscreen .rink-key{padding:4px 10px!important}
+ body.match-live-fullscreen .rink-player{width:clamp(22px,4vh,36px)!important;height:clamp(22px,4vh,36px)!important}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
 </style>
 </head>
 <body>
@@ -710,9 +775,11 @@ function runContinuousRinkMotion(now){
  const scene=state.rinkScene&&Date.now()<(state.rinkScene.until||0)?state.rinkScene:null;const kind=scene?scene.type:'idle';
  if(kind!==rinkMotion.sceneKey)rinkSetTargets(kind,now);
  // During each scene, interpolate through timed puck/player waypoints smoothly.
- if(rinkMotion.paths.length){const elapsed=now-rinkMotion.phaseAt;let prev=rinkMotion.paths[0],next=rinkMotion.paths[ rinkMotion.paths.length-1 ];for(let i=0;i<rinkMotion.paths.length;i++){if(rinkMotion.paths[i].at<=elapsed)prev=rinkMotion.paths[i];if(rinkMotion.paths[i].at>=elapsed){next=rinkMotion.paths[i];break;}}const span=Math.max(1,next.at-prev.at),u=Math.max(0,Math.min(1,(elapsed-prev.at)/span));const ease=u*u*(3-2*u);rinkMotion.puckTarget={x:prev.puck[0]+(next.puck[0]-prev.puck[0])*ease,y:prev.puck[1]+(next.puck[1]-prev.puck[1])*ease};if(prev.player&&next.player){prev.player.tx+=(next.player.tx-prev.player.tx)*ease;prev.player.ty+=(next.player.ty-prev.player.ty)*ease;}}
+ if(rinkMotion.paths.length){const elapsed=now-rinkMotion.phaseAt;let prev=rinkMotion.paths[0],next=rinkMotion.paths[rinkMotion.paths.length-1];for(let i=0;i<rinkMotion.paths.length;i++){if(rinkMotion.paths[i].at<=elapsed)prev=rinkMotion.paths[i];if(rinkMotion.paths[i].at>=elapsed){next=rinkMotion.paths[i];break;}}const span=Math.max(1,next.at-prev.at),u=Math.max(0,Math.min(1,(elapsed-prev.at)/span)),ease=u*u*(3-2*u);rinkMotion.puckTarget={x:prev.puck[0]+(next.puck[0]-prev.puck[0])*ease,y:prev.puck[1]+(next.puck[1]-prev.puck[1])*ease};if(prev.player&&next.player&&prev.player===next.player){const baseX=prev.player._baseTx??prev.player.tx,baseY=prev.player._baseTy??prev.player.ty;prev.player.tx=baseX+(next.player.tx-baseX)*ease;prev.player.ty=baseY+(next.player.ty-baseY)*ease;}}
  rinkMotion.targets.forEach((p,i)=>{const speed=p.gk?3.2:2.4;const k=1-Math.exp(-speed*dt);p.x+=(p.tx-p.x)*k;p.y+=(p.ty-p.y)*k;const n=nodes[i];if(n){n.style.setProperty('--x',p.x.toFixed(2)+'%');n.style.setProperty('--y',p.y.toFixed(2)+'%');}});
  const pk=rink.querySelector('.rink-puck');if(pk){const k=1-Math.exp(-7*dt);rinkMotion.puck.x+=(rinkMotion.puckTarget.x-rinkMotion.puck.x)*k;rinkMotion.puck.y+=(rinkMotion.puckTarget.y-rinkMotion.puck.y)*k;pk.style.setProperty('--px',rinkMotion.puck.x.toFixed(2)+'%');pk.style.setProperty('--py',rinkMotion.puck.y.toFixed(2)+'%');}
+ const goalScene=scene&&(scene.type==='goal'||scene.type==='awaygoal');rink.classList.toggle('goal-celebration',!!goalScene);
+ nodes.forEach(n=>{n.classList.toggle('goal-celebrate',!!goalScene&&!n.classList.contains('gk')&&((scene.type==='goal'&&n.classList.contains('home'))||(scene.type==='awaygoal'&&!n.classList.contains('home'))));n.classList.toggle('keeper-react',!!scene&&(scene.type==='save'||scene.type==='goal'||scene.type==='awaygoal')&&n.classList.contains('gk'));});
  rinkFrameId=requestAnimationFrame(runContinuousRinkMotion);
 }
 function startContinuousRinkMotion(){if(!rinkFrameId){rinkLastFrame=0;rinkMotion.targets=[];rinkMotion.sceneKey='';rinkFrameId=requestAnimationFrame(runContinuousRinkMotion)}}
